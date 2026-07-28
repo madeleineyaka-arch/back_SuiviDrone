@@ -1,4 +1,8 @@
 package com.example.back_suividrone.entity;
 
-public class Role {
+public enum Role {
+    ADMIN,
+    SUPERVISOR,
+    PILOTE,
+    TECHNICIEN
 }
