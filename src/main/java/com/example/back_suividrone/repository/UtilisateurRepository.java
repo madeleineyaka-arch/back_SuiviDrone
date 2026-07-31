@@ -7,7 +7,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
-Optional<Utilisateur> findByEmail(String email);
-List<Utilisateur> findByRole(Role role);
+public interface UtilisateurRepository
+        extends JpaRepository<Utilisateur, Long> {
+
+
+    // Pour la connexion JWT
+    Optional<Utilisateur> findByEmail(String email);
+
+
+    // Recherche militaire par matricule
+    Optional<Utilisateur> findByMatricule(String matricule);
+
+
+    // Afficher les utilisateurs par rôle
+    List<Utilisateur> findByRole(Role role);
+
+
+    // Vérification avant création
+    boolean existsByEmail(String email);
+
+
+    boolean existsByMatricule(String matricule);
+
 }
