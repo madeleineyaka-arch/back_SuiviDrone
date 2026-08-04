@@ -44,9 +44,21 @@ public class SecurityConfig {
 
 
 
-                        // Seulement ADMIN
+                        // Gestion des utilisateurs ADMIN uniquement
                         .requestMatchers("/api/utilisateurs/**")
                         .hasRole("ADMIN")
+
+
+
+                        // Gestion des drones
+                        // ADMIN + SUPERVISEUR + TECHNICIEN peuvent accéder
+                        .requestMatchers("/api/drones/**")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "SUPERVISEUR",
+                                "TECHNICIEN"
+                        )
+
 
 
                         // autres API protégées
