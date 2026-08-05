@@ -60,6 +60,14 @@ public class SecurityConfig {
                         )
 
 
+                        // Gestion des missions
+                        // ADMIN + SUPERVISEUR  peuvent accéder
+                        .requestMatchers("/api/mission/**")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "SUPERVISEUR"
+                        )
+
 
                         // autres API protégées
                         .anyRequest()
