@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Mission {
 
 
@@ -24,15 +24,12 @@ public class Mission {
     private Long id;
 
 
-
     @Column(nullable = false, length = 100)
     private String titre;
 
 
-
     @Column(nullable = false, length = 255)
     private String objectif;
-
 
 
     @Enumerated(EnumType.STRING)
@@ -40,25 +37,20 @@ public class Mission {
     private TypeMission typeMission;
 
 
-
     @Column(nullable = false)
     private LocalDate dateMission;
-
 
 
     @Column(nullable = false)
     private Time heureDebut;
 
 
-
     @Column(nullable = false)
     private Time heureFin;
 
 
-
     @Column(nullable = false, length = 100)
     private String lieu;
-
 
 
     @Enumerated(EnumType.STRING)
@@ -75,13 +67,6 @@ public class Mission {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pilote_id", nullable = false)
-    @JsonIgnoreProperties({
-            "password",
-            "authorities",
-            "hibernateLazyInitializer",
-            "handler"
-    })
     private Utilisateur pilote;
-
 
 }

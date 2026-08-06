@@ -3,31 +3,47 @@ package com.example.back_suividrone.service;
 
 import com.example.back_suividrone.dto.MissionResponseDTO;
 import com.example.back_suividrone.entity.Mission;
+
 import org.springframework.stereotype.Component;
+
 
 
 @Component
 public class MissionMapper {
 
 
+
     public MissionResponseDTO toDTO(Mission mission){
+
 
         MissionResponseDTO dto = new MissionResponseDTO();
 
 
+
         dto.setId(mission.getId());
 
-        dto.setTitre(mission.getTitre());
 
-        dto.setObjectif(mission.getObjectif());
+        dto.setTitre(
+                mission.getTitre()
+        );
+
+
+        dto.setObjectif(
+                mission.getObjectif()
+        );
+
+
 
         dto.setTypeMission(
                 mission.getTypeMission().name()
         );
 
+
+
         dto.setDateMission(
                 mission.getDateMission()
         );
+
 
 
         dto.setHeureDebut(
@@ -45,41 +61,57 @@ public class MissionMapper {
         );
 
 
+
         dto.setStatut(
                 mission.getStatut().name()
         );
 
 
-        dto.setDroneId(
-                mission.getDrone().getId()
-        );
+
+        if(mission.getDrone()!=null){
+
+            dto.setDroneId(
+                    mission.getDrone().getId()
+            );
 
 
-        dto.setDroneNom(
-                mission.getDrone().getNom()
-        );
+            dto.setDroneNom(
+                    mission.getDrone().getNom()
+            );
+
+        }
 
 
-        dto.setPiloteId(
-                mission.getPilote().getId()
-        );
+
+        if(mission.getPilote()!=null){
 
 
-        dto.setPiloteNom(
-                mission.getPilote().getNom()
-        );
+            dto.setPiloteId(
+                    mission.getPilote().getId()
+            );
 
 
-        dto.setPilotePrenom(
-                mission.getPilote().getPrenom()
-        );
+            dto.setPiloteNom(
+                    mission.getPilote().getNom()
+            );
 
 
-        dto.setPiloteEmail(
-                mission.getPilote().getEmail()
-        );
+            dto.setPilotePrenom(
+                    mission.getPilote().getPrenom()
+            );
+
+
+            dto.setPiloteEmail(
+                    mission.getPilote().getEmail()
+            );
+
+        }
+
 
 
         return dto;
+
     }
+
+
 }

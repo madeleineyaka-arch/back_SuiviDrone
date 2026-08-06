@@ -33,6 +33,16 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         log.info("Création utilisateur");
 
 
+        // Vérification du mot de passe
+        if(utilisateur.getPassword() == null || utilisateur.getPassword().isBlank()) {
+
+            throw new RuntimeException("Le mot de passe est obligatoire");
+
+        }
+
+
+
+        // Vérification email
         if(utilisateurRepository.existsByEmail(utilisateur.getEmail())){
 
             throw new RuntimeException("Email déjà utilisé");
@@ -40,6 +50,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         }
 
 
+
+        // Vérification matricule
         if(utilisateurRepository.existsByMatricule(utilisateur.getMatricule())){
 
             throw new RuntimeException("Matricule déjà utilisé");
@@ -54,8 +66,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         );
 
 
+
         return utilisateurRepository.save(utilisateur);
     }
+
 
 
 
@@ -70,12 +84,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 
+
     @Override
     public List<Utilisateur> getAllUtilisateurs(){
 
         return utilisateurRepository.findAll();
 
     }
+
 
 
 
@@ -90,6 +106,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 
+
     @Override
     public List<Utilisateur> getUtilisateurByRole(Role role){
 
@@ -100,8 +117,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 
+
     @Override
     public void deleteUtilisateur(Long id){
+
 
         if(!utilisateurRepository.existsById(id)){
 
@@ -113,6 +132,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateurRepository.deleteById(id);
 
     }
+
 
 
 
@@ -134,6 +154,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 
+        // Vérification email
         if(!existant.getEmail().equals(utilisateur.getEmail())
                 &&
                 utilisateurRepository.existsByEmail(utilisateur.getEmail())){
@@ -144,6 +165,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 
+
+        // Vérification matricule
         if(!existant.getMatricule().equals(utilisateur.getMatricule())
                 &&
                 utilisateurRepository.existsByMatricule(utilisateur.getMatricule())){
@@ -155,13 +178,37 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 
+
         existant.setNom(utilisateur.getNom());
+
         existant.setPrenom(utilisateur.getPrenom());
+
         existant.setEmail(utilisateur.getEmail());
+
         existant.setMatricule(utilisateur.getMatricule());
+
         existant.setGrade(utilisateur.getGrade());
+
         existant.setRole(utilisateur.getRole());
+
         existant.setActif(utilisateur.getActif());
+
+
+
+
+        // Modification du mot de passe uniquement s'il est fourni
+        if(utilisateur.getPassword() != null
+                && !utilisateur.getPassword().isBlank()){
+
+
+            existant.setPassword(
+                    passwordEncoder.encode(
+                            utilisateur.getPassword()
+                    )
+            );
+
+        }
+
 
 
 

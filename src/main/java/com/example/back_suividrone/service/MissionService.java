@@ -1,30 +1,37 @@
 package com.example.back_suividrone.service;
 
+
+import com.example.back_suividrone.dto.MissionResponseDTO;
 import com.example.back_suividrone.entity.Mission;
 import com.example.back_suividrone.entity.TypeMission;
 
+
 import java.util.List;
-import java.util.Optional;
+
 
 
 public interface MissionService {
 
 
-    Mission saveMission(Mission mission);
+    MissionResponseDTO saveMission(Mission mission);
 
 
-    List<Mission> findByTypeMission(TypeMission typeMission);
+    List<MissionResponseDTO> getAllMissions();
 
 
-    Optional<Mission> findById(Long id);
+    MissionResponseDTO findById(Long id);
 
 
-    List<Mission> getAllMissions();
+    List<MissionResponseDTO> findByTypeMission(TypeMission typeMission);
+
+
+    MissionResponseDTO updateMission(
+            Long id,
+            Mission mission
+    );
 
 
     void deleteMission(Long id);
 
-
-    Mission updateMission(Long id, Mission mission);
 
 }

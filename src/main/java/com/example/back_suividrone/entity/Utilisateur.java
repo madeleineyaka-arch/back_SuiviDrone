@@ -1,11 +1,10 @@
 package com.example.back_suividrone.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,9 +17,11 @@ import java.util.Collections;
 
 @Entity
 @Table(name = "utilisateurs")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Utilisateur implements UserDetails {
 
 
@@ -29,21 +30,30 @@ public class Utilisateur implements UserDetails {
     private Long id;
 
 
+
     @Column(nullable = false, length = 100)
     private String nom;
+
 
 
     @Column(nullable = false, length = 100)
     private String prenom;
 
 
+
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
 
+
+    /*
+     * Le mot de passe peut être reçu en entrée JSON
+     * mais ne sera jamais renvoyé dans les réponses API
+     */
     @Column(nullable = false, length = 255)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
 
 
     @Column(nullable = false, unique = true, length = 100)
@@ -69,10 +79,9 @@ public class Utilisateur implements UserDetails {
 
 
     /*
-     * Gestion des rôles Spring Security
+     * Gestion des autorisations Spring Security
      */
     @Override
-    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
 
@@ -94,7 +103,7 @@ public class Utilisateur implements UserDetails {
 
 
     /*
-     * Email utilisé comme username
+     * L'email sert d'identifiant de connexion
      */
     @Override
     public String getUsername() {
@@ -105,8 +114,11 @@ public class Utilisateur implements UserDetails {
 
 
 
+    /*
+     * Obligatoire pour UserDetails
+     * Ne pas mettre @JsonIgnore ici
+     */
     @Override
-    @JsonIgnore
     public String getPassword() {
 
         return password;
@@ -116,7 +128,6 @@ public class Utilisateur implements UserDetails {
 
 
     @Override
-    @JsonIgnore
     public boolean isAccountNonExpired() {
 
         return Boolean.TRUE.equals(actif);
@@ -126,7 +137,6 @@ public class Utilisateur implements UserDetails {
 
 
     @Override
-    @JsonIgnore
     public boolean isAccountNonLocked() {
 
         return Boolean.TRUE.equals(actif);
@@ -136,7 +146,6 @@ public class Utilisateur implements UserDetails {
 
 
     @Override
-    @JsonIgnore
     public boolean isCredentialsNonExpired() {
 
         return Boolean.TRUE.equals(actif);
@@ -146,12 +155,10 @@ public class Utilisateur implements UserDetails {
 
 
     @Override
-    @JsonIgnore
     public boolean isEnabled() {
 
         return Boolean.TRUE.equals(actif);
 
     }
-
 
 }

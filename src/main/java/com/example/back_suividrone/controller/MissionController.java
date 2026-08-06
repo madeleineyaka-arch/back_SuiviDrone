@@ -1,13 +1,13 @@
 package com.example.back_suividrone.controller;
 
 
+import com.example.back_suividrone.dto.MissionResponseDTO;
 import com.example.back_suividrone.entity.Mission;
 import com.example.back_suividrone.entity.TypeMission;
 import com.example.back_suividrone.service.MissionService;
 
 
 import lombok.RequiredArgsConstructor;
-
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,11 +29,12 @@ public class MissionController {
 
 
 
-    // Voir toutes les missions
+
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
-    public ResponseEntity<List<Mission>> getAllMissions(){
+    public ResponseEntity<List<MissionResponseDTO>> getAll(){
+
 
         return ResponseEntity.ok(
                 missionService.getAllMissions()
@@ -44,11 +45,11 @@ public class MissionController {
 
 
 
-    // Créer mission
+
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Mission> saveMission(
+    public ResponseEntity<MissionResponseDTO> save(
             @RequestBody Mission mission){
 
 
@@ -61,30 +62,30 @@ public class MissionController {
 
 
 
-    // Voir une mission
+
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
-    public ResponseEntity<Mission> getMissionById(
+    public ResponseEntity<MissionResponseDTO> findById(
             @PathVariable Long id){
 
 
-        return missionService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(
-                        ResponseEntity.notFound().build()
-                );
+        return ResponseEntity.ok(
+                missionService.findById(id)
+        );
 
     }
 
 
 
 
-    // Recherche par type
+
+
 
     @GetMapping("/type/{typeMission}")
     @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
-    public ResponseEntity<List<Mission>> getMissionByType(
+    public ResponseEntity<List<MissionResponseDTO>> findByType(
             @PathVariable TypeMission typeMission){
 
 
@@ -98,17 +99,17 @@ public class MissionController {
 
 
 
-    // Modifier
+
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Mission> updateMission(
+    public ResponseEntity<MissionResponseDTO> update(
             @PathVariable Long id,
             @RequestBody Mission mission){
 
 
         return ResponseEntity.ok(
-                missionService.updateMission(id, mission)
+                missionService.updateMission(id,mission)
         );
 
     }
@@ -117,11 +118,11 @@ public class MissionController {
 
 
 
-    // Supprimer
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteMission(
+    public ResponseEntity<Void> delete(
             @PathVariable Long id){
 
 
